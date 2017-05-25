@@ -1,49 +1,50 @@
-nginx:
-  build: ./nginx
-  ports:
-    - 80:80
-  links:
-    - php
-  volumes_from:
-    - app
 
-php:
-  build: ./php/
-  expose:
-    - 9000
-  links:
-    - mysql 
-  volumes_from:
-    - app
+  nginx:
+    build: ./nginx
+    ports:
+      - 8080:80
+    links:
+      - php
+    volumes_from:
+      - app
 
-app:
-  image: php:7.1-fpm
-  volumes:
-    - ./slimUserLogin/public:/var/www/html
-    - ./slimUserLogin:/var/www
-  command: "true"
+  php:
+    build: ./php/
+    expose:
+      - 9000
+    links:
+      - mysql
+    volumes_from:
+      - app
 
-mysql:
-  image: mysql:latest
-  volumes_from:
-    - data
-  environment:
-    MYSQL_ROOT_PASSWORD: secret
-    MYSQL_DATABASE: project
-    MYSQL_USER: project
-    MYSQL_PASSWORD: project
+  app:
+    image: php:7.1-fpm
+    volumes:
+      - ./slimUserLogin/public:/var/www/html
+      - ./slimUserLogin:/var/www
+    command: "true"
 
-data:
-  image: mysql:latest
-  volumes:
-    - /var/lib/mysql 
-  command: "true"
+  mysql:
+    image: mysql:5.7
+    volumes_from:
+      - data
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: slimUserLogin
+      MYSQL_USER: slimUserLogin
+      MYSQL_PASSWORD: slimUserLogin
 
-phpmyadmin:
-  image: phpmyadmin/phpmyadmin
-  ports: 
-    - 8080:80
-  links:
-    - mysql 
-  environment:
-    PMA_HOST: mysql
+  data:
+    image: mysql:5.7
+    volumes:
+      - /var/lib/mysql
+    command: "true"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8090:80
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql

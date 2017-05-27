@@ -1,50 +1,58 @@
+version: '2.1'
 
-  nginx:
-    build: ./nginx
-    ports:
-      - 8080:80
-    links:
-      - php
-    volumes_from:
-      - app
+services:
+    nginx:
+        build: ./nginx/
+        ports:
+            - 8080:80
+        volumes:
+            - "${PROJECT_PUBLIC_ROOT}:/var/www/html:ro"
+            - "${PROJECT_ROOT}:/var/www:ro"
+        networks:
+            - server
+        depends_on:
+            - php
 
-  php:
-    build: ./php/
-    expose:
-      - 9000
-    links:
-      - mysql
-    volumes_from:
-      - app
+    php:
+        build: ./php/
+        expose:
+            - 9000
+        volumes:
+            - "${PROJECT_PUBLIC_ROOT}:/var/www/html"
+            - "${PROJECT_ROOT}:/var/www"
+        networks:
+            - database
+            - server
+        depends_on:
+            - mysql
 
-  app:
-    image: php:7.1-fpm
-    volumes:
-      - ./slimUserLogin/public:/var/www/html
-      - ./slimUserLogin:/var/www
-    command: "true"
+    mysql:
+        image: mysql:5.7
+        volumes:
+            - data:/var/lib/mysql
+        networks:
+            - database
+        environment:
+            MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+            MYSQL_DATABASE: "${DB_NAME}"
+            MYSQL_USER: "${DB_USER}"
+            MYSQL_PASSWORD: "${DB_PASSWORD}"
 
-  mysql:
-    image: mysql:5.7
-    volumes_from:
-      - data
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: slimUserLogin
-      MYSQL_USER: slimUserLogin
-      MYSQL_PASSWORD: slimUserLogin
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - 8090:80
+        networks:
+            - database
+        depends_on:
+            - mysql
+        environment:
+            PMA_HOST: mysql
 
-  data:
-    image: mysql:5.7
-    volumes:
-      - /var/lib/mysql
-    command: "true"
+volumes:
+    data:
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - 8090:80
-    links:
-      - mysql
-    environment:
-      PMA_HOST: mysql
+networks:
+    database:
+    server:
+

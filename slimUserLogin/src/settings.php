@@ -11,9 +11,19 @@ return [
 
         // Monolog settings
         'logger' => [
-            'name' => 'slim-app',
+            'name' => 'slimUserLogin',
             'path' => __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
         ],
+
+	    'db' =>[
+	        'driver' => 'mysql',
+		    'host' => 'mysql',
+		    'database' => 'slimUserLogin',
+		    'username' => 'slimUserLogin',
+		    'password' => 'slimUserLogin',
+		    'charset' => 'utf8' ,
+		    'collation' => 'utf8_unicode_ci'
+	    ],
     ],
 ];

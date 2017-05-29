@@ -20,25 +20,25 @@ class AuthController extends Controller
 		/** @var Validator $validation */
 		$validation = $this->container->validator->validate($request, [
 			'name' => v::notEmpty()->alpha(),
-			'email' => v::notEmpty()->noWhitespace()->email(),
-			'password' => v::notEmpty()
+			'email' => v::notEmpty()->noWhitespace()->email()->emailAvailable(),
+			'password' => v::notEmpty()->noWhitespace()
 		]);
 
-		if($validation->failed()){
+		if ($validation->failed()) {
 			return $response->withRedirect($this->container->router->pathFor('register'));
-		}
-		else{
+		} else {
 			User::create([
 				'name' => $request->getParam('name'),
 				'email' => $request->getParam('email'),
-				'password' => password_hash($request->getParam('password'),PASSWORD_DEFAULT)
+				'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
 			]);
 		}
-
 
 		$this->phpView->render($response, 'includes/header.phtml');
 		$this->phpView->render($response, 'register.phtml', ["router" => $this->container->router]);
 		$this->phpView->render($response, 'includes/footer.phtml');
+
+		return $response;
 	}
 
 

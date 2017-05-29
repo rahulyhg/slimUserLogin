@@ -2,6 +2,7 @@
 
 // DIC configuration
 use Slim\Container;
+use Respect\Validation\Validator as v;
 
 $container = $app->getContainer();
 
@@ -34,3 +35,5 @@ $container['db'] = function(Container $container) use ($capsule){
 $container['validator'] = function (Container $container) {
 	return new UserLogin\Validation\Validator();
 };
+
+v::with('UserLogin\\Validation\\Rules\\');

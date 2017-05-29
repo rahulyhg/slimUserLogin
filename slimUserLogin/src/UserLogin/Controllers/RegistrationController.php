@@ -15,9 +15,18 @@ use Slim\Http\Response;
 use UserLogin\Models\User;
 use UserLogin\Validation\Validator;
 
+/**
+ * Class RegistrationController
+ * @package UserLogin\Controllers
+ */
 class RegistrationController extends Controller
 {
-
+	/**
+	 * Displays the Registration form
+	 * @param Request  $request
+	 * @param Response $response
+	 * @return Response
+	 */
 	public function getRegistration(Request $request, Response $response)
 	{
 		// Sample log message
@@ -30,6 +39,12 @@ class RegistrationController extends Controller
 		]);
 	}
 
+	/**
+	 * Process the Registration Form received through HTTP POST method
+	 * @param Request  $request
+	 * @param Response $response
+	 * @return Response
+	 */
 	public function postRegistration(Request $request, Response $response)
 	{
 		/** @var Validator $validation */
@@ -42,6 +57,7 @@ class RegistrationController extends Controller
 		if ($validation->failed()) {
 			$this->container->flash->addMessage('error',
 				'Registration Failed! Please apply corrections as prescribed below.');
+
 			return $response->withRedirect($this->container->router->pathFor('registration'));
 		} else {
 			User::create([
@@ -50,7 +66,8 @@ class RegistrationController extends Controller
 				'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
 			]);
 
-			$this->container->flash->addMessage('info','Registration Successful! Welcome ' . $request->getParam('name'));
+			$this->container->flash->addMessage('info',
+				'Registration Successful! Welcome ' . $request->getParam('name'));
 			$this->container->auth->attempt($request->getParam('email'), $request->getParam('password'));
 
 			return $response->withRedirect($this->container->router->pathFor('home'));

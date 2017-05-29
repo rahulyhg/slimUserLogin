@@ -11,9 +11,12 @@ namespace UserLogin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class User
+ * @package UserLogin\Models
+ */
 class User extends Model
 {
 	protected $fillable =['name', 'email', 'password'];
-
 
 }

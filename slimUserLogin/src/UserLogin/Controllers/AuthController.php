@@ -8,10 +8,19 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use UserLogin\Validation\Validator;
 
+/**
+ * Class AuthController
+ * @package UserLogin\Controllers
+ */
 class AuthController extends Controller
 {
 
-
+	/**
+	 * Display Login Form
+	 * @param Request  $request
+	 * @param Response $response
+	 * @return Response
+	 */
 	public function getLogin(Request $request, Response $response)
 	{
 		// Sample log message
@@ -25,6 +34,12 @@ class AuthController extends Controller
 	}
 
 
+	/**
+	 * Submit Login Form through HTTP POST method
+	 * @param Request  $request
+	 * @param Response $response
+	 * @return Response
+	 */
 	public function postLogin(Request $request, Response $response)
 	{
 		/** @var Validator $validation */
@@ -52,6 +67,12 @@ class AuthController extends Controller
 
 	}
 
+	/**
+	 * Logout User and redirect to Home Page
+	 * @param Request  $request
+	 * @param Response $response
+	 * @return Response
+	 */
 	public function getLogout(Request $request, Response $response)
 	{
 		// Sample log message

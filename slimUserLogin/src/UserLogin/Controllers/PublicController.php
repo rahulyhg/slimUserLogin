@@ -5,11 +5,17 @@ namespace UserLogin\Controllers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+/**
+ * Class PublicController
+ * @package UserLogin\Controllers
+ */
 class PublicController extends Controller
 {
 	/**
-	 * @param $request
-	 * @param $response
+	 * Return the public index page
+	 * @param Request  $request
+	 * @param Response $response
+	 * @return Response
 	 */
 	public function index(Request $request, Response $response)
 	{

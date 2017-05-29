@@ -7,6 +7,10 @@ use Slim\Container;
 use Slim\Http\Response;
 use Slim\Views\PhpRenderer;
 
+/**
+ * Class Controller
+ * @package UserLogin\Controllers
+ */
 abstract class Controller
 {
 

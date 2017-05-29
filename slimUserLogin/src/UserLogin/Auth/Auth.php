@@ -11,10 +11,20 @@ namespace UserLogin\Auth;
 
 use UserLogin\Models\User;
 
+/**
+ * Class Auth
+ * @package UserLogin\Auth
+ */
 class Auth
 {
 	protected $user;
 
+	/**
+	 * Attempt to authenticate user with the provided credentials
+	 * @param $email
+	 * @param $password
+	 * @return bool
+	 */
 	public function attempt($email, $password)
 	{
 		$user = User::where('email', $email)->first();
@@ -29,12 +39,19 @@ class Auth
 		return $success;
 	}
 
-
+	/**
+	 * Verify if a User is currently authenticated
+	 * @return bool
+	 */
 	public function isAuthenticated()
 	{
 		return isset($_SESSION['user.id']);
 	}
 
+	/**
+	 * Returns the currently authenticated User
+	 * @return User|null
+	 */
 	public function getUser()
 	{
 		if ($this->isAuthenticated() && (empty($this->user) || !($this->user instanceof User))) {
@@ -44,12 +61,20 @@ class Auth
 		return $this->user;
 	}
 
+	/**
+	 * Set User property
+	 * @param User $user
+	 */
 	public function setUser(User $user)
 	{
 		$this->user = $user;
 	}
 
-	public function terminate(){
+	/**
+	 * Terminate Authenticated Session
+	 */
+	public function terminate()
+	{
 		unset($_SESSION['user.id']);
 		unset($this->user);
 	}

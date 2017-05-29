@@ -12,10 +12,23 @@ namespace UserLogin\Validation;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Slim\Http\Request;
 
+/**
+ * Class Validator
+ * @package UserLogin\Validation
+ */
 class Validator
 {
+	/**
+	 * @var array
+	 */
 	protected $errors;
 
+	/**
+	 * Validates Form Fields
+	 * @param Request $request
+	 * @param array   $rules
+	 * @return $this
+	 */
 	public function validate(Request $request, array $rules)
 	{
 		foreach ($rules as $field => $rule) {
@@ -31,7 +44,12 @@ class Validator
 		return $this;
 	}
 
-	public function failed(){
+	/**
+	 * Returns true if validation failed
+	 * @return bool
+	 */
+	public function failed()
+	{
 		return !empty($this->errors);
 	}
 

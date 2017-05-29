@@ -8,9 +8,12 @@
 
 namespace UserLogin\Validation\Exceptions;
 
-
 use Respect\Validation\Exceptions\ValidationException;
 
+/**
+ * Class EmailAvailableException
+ * @package UserLogin\Validation\Exceptions
+ */
 class EmailAvailableException extends ValidationException
 {
 	public static $defaultTemplates = [

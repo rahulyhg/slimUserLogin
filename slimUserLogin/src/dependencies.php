@@ -36,4 +36,10 @@ $container['validator'] = function (Container $container) {
 	return new UserLogin\Validation\Validator();
 };
 
+// Custom Validation Rules
 v::with('UserLogin\\Validation\\Rules\\');
+
+//Authentication
+$container['auth'] = function (Container $container) {
+	return new UserLogin\Auth\Auth();
+};

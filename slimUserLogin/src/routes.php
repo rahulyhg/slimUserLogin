@@ -4,8 +4,13 @@
 
 $container = $app->getContainer();
 
-$container['PublicController'] =  function($container){
+
+$container['PublicController'] = function ($container) {
 	return new UserLogin\Controllers\PublicController($container);
+};
+
+$container['RegistrationController'] =  function($container){
+	return new UserLogin\Controllers\RegistrationController($container);
 };
 
 $container['AuthController'] = function ($container) {
@@ -15,15 +20,16 @@ $container['AuthController'] = function ($container) {
 
 
 
-$app->get('/', 'PublicController:index');
+$app->get('/', 'PublicController:index')->setName('home');
 
-$app->get('/register', 'PublicController:register')->setName('register');
+$app->get('/registration', 'RegistrationController:getRegistration')->setName('registration');
 
-$app->post('/register', 'AuthController:register');
+$app->post('/registration', 'RegistrationController:postRegistration');
 
-$app->get('/login', 'PublicController:login')->setName('login');;
-$app->post('/login', 'AuthController:login');
+$app->get('/login', 'AuthController:getLogin')->setName('login');;
+$app->post('/login', 'AuthController:postLogin');
 
+$app->get('/logout', 'AuthController:getLogout')->setName('logout');;
 
 $app->get('/home', function ($request, $response, $args) {
 	// Sample log message

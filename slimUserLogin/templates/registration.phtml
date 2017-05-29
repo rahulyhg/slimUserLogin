@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
-            <div class="panel-heading"> Register</div>
+            <div class="panel-heading"> Registration</div>
             <div class="panel-body">
-                <form action="<?= $router->pathFor('register') ?>" method="post" autocomplete="off">
+                <form action="<?= $router->pathFor('registration') ?>" method="post" autocomplete="off">
 
                     <div class="form-group<?= empty($validation_errors['name']) ? '' : ' has-error'; ?>">
                         <label for="name">Name</label>

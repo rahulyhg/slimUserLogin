@@ -18,7 +18,6 @@ class ValidationErrorsMiddleware extends Middleware
 	{
 
 		if (!empty($_SESSION['validation_errors'])) {
-			//var_dump($_SESSION['validation_errors']);
 			$request = $request->withAttribute('validation_errors', $_SESSION['validation_errors']);
 			unset($_SESSION['validation_errors']);
 		}

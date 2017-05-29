@@ -6,47 +6,55 @@ namespace UserLogin\Controllers;
 use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use UserLogin\Models\User;
 use UserLogin\Validation\Validator;
 
 class AuthController extends Controller
 {
 
 
-	public function register(Request $request, Response $response)
+	public function getLogin(Request $request, Response $response)
 	{
-		var_dump($request->getParams());
+		// Sample log message
+		//$this->logger->info("Login '/login' route");
 
+		return $this->render($response, 'login.phtml', [
+			'router' => $this->container->router,
+			'previous_params' => $request->getAttribute('previous_params'),
+			'validation_errors' => $request->getAttribute('validation_errors')
+		]);
+	}
+
+
+	public function postLogin(Request $request, Response $response)
+	{
 		/** @var Validator $validation */
 		$validation = $this->container->validator->validate($request, [
-			'name' => v::notEmpty()->alpha(),
-			'email' => v::notEmpty()->noWhitespace()->email()->emailAvailable(),
+			'email' => v::notEmpty()->noWhitespace()->email(),
 			'password' => v::notEmpty()->noWhitespace()
 		]);
 
 		if ($validation->failed()) {
-			return $response->withRedirect($this->container->router->pathFor('register'));
+			return $response->withRedirect($this->container->router->pathFor('login'));
 		} else {
-			User::create([
-				'name' => $request->getParam('name'),
-				'email' => $request->getParam('email'),
-				'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
-			]);
+			$auth = $this->container->auth->attempt($request->getParam('email'), $request->getParam('password'));
+
+			if (!$auth) {
+				return $response->withRedirect($this->container->router->pathFor('login'));
+			} else {
+				return $response->withRedirect($this->container->router->pathFor('home'));
+			}
 		}
 
-		$this->phpView->render($response, 'includes/header.phtml');
-		$this->phpView->render($response, 'register.phtml', ["router" => $this->container->router]);
-		$this->phpView->render($response, 'includes/footer.phtml');
-
-		return $response;
 	}
 
-
-	public function login(Request $request, Response $response)
+	public function getLogout(Request $request, Response $response)
 	{
-		$this->phpView->render($response, 'includes/header.phtml');
-		$this->phpView->render($response, 'login.phtml', ["router" => $this->container->router]);
-		$this->phpView->render($response, 'includes/footer.phtml');
+		// Sample log message
+		//$this->logger->info("Login '/login' route");
+
+		$this->container->auth->terminate();
+
+		return $response->withRedirect($this->container->router->pathFor('home'));
 	}
 
 

@@ -39,9 +39,10 @@ abstract class Controller
 		$args[] = ['auth' => $this->container->auth];
 
 		$this->phpView->render($response, 'includes/header.phtml', [
-				'router' => $this->container->router,
-				'auth' => $this->container->auth,
-			]);
+			'auth' => $this->container->auth,
+			'flash' => $this->container->flash,
+			'router' => $this->container->router,
+		]);
 		$this->phpView->render($response, $template, $args);
 		$this->phpView->render($response, 'includes/footer.phtml', ['router' => $this->container->router,]);
 

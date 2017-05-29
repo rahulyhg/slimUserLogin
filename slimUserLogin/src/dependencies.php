@@ -43,3 +43,8 @@ v::with('UserLogin\\Validation\\Rules\\');
 $container['auth'] = function (Container $container) {
 	return new UserLogin\Auth\Auth();
 };
+
+// Slim Flash Messages
+$container['flash'] = function () {
+	return new \Slim\Flash\Messages();
+};

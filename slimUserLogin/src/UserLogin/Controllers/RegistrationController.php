@@ -9,7 +9,7 @@
 namespace UserLogin\Controllers;
 
 
-use Illuminate\Contracts\Validation\Validator as v;
+use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use UserLogin\Models\User;
@@ -40,6 +40,8 @@ class RegistrationController extends Controller
 		]);
 
 		if ($validation->failed()) {
+			$this->container->flash->addMessage('error',
+				'Registration Failed! Please apply corrections as prescribed below.');
 			return $response->withRedirect($this->container->router->pathFor('registration'));
 		} else {
 			User::create([
@@ -48,6 +50,7 @@ class RegistrationController extends Controller
 				'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
 			]);
 
+			$this->container->flash->addMessage('info','Registration Successful! Welcome ' . $request->getParam('name'));
 			$this->container->auth->attempt($request->getParam('email'), $request->getParam('password'));
 
 			return $response->withRedirect($this->container->router->pathFor('home'));

@@ -34,11 +34,16 @@ class AuthController extends Controller
 		]);
 
 		if ($validation->failed()) {
+			$this->container->flash->addMessage('error',
+				'Invalid information. Please apply corrections as prescribed below.');
+
 			return $response->withRedirect($this->container->router->pathFor('login'));
 		} else {
 			$auth = $this->container->auth->attempt($request->getParam('email'), $request->getParam('password'));
 
 			if (!$auth) {
+				$this->container->flash->addMessage('error', 'Login Failed! Username or Password incorrect');
+
 				return $response->withRedirect($this->container->router->pathFor('login'));
 			} else {
 				return $response->withRedirect($this->container->router->pathFor('home'));
@@ -53,6 +58,8 @@ class AuthController extends Controller
 		//$this->logger->info("Login '/login' route");
 
 		$this->container->auth->terminate();
+
+		$this->container->flash->addMessage('info', 'You have been logged out.');
 
 		return $response->withRedirect($this->container->router->pathFor('home'));
 	}

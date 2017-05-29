@@ -80,3 +80,20 @@
 </nav>
 
 <div class="container-fluid">
+	<? if ($flash->getMessage('info')): ?>
+		<? foreach ($flash->getMessage('info') as $message): ?>
+            <div class="alert alert-info"><?= $message; ?></div>
+		<? endforeach; ?>
+	<? endif; ?>
+
+	<? if ($flash->getMessage('warning')): ?>
+		<? foreach ($flash->getMessage('warning') as $message): ?>
+            <div class="alert alert-warning"><?= $message; ?></div>
+		<? endforeach; ?>
+	<? endif; ?>
+
+	<? if ($flash->getMessage('error')): ?>
+		<? foreach ($flash->getMessage('error') as $message): ?>
+            <div class="alert alert-danger"><?= $message; ?></div>
+		<? endforeach; ?>
+	<? endif; ?>
